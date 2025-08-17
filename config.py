@@ -1,0 +1,3 @@
+ASSISTANT_NAME = "Spidey"
+VOICE_RATE = 150
+WAKE_WORD = "spidey"
