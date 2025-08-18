@@ -1,70 +1,65 @@
-import subprocess
 import os
 import webbrowser
-import cv2
-import yt_dlp
+import subprocess
 
-# === Music Player without VLC ===
-def play_youtube_audio(search_query):
-    print(f"🎵 Searching YouTube for: {search_query}")
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'quiet': True,
-        'noplaylist': True,
-        'default_search': 'ytsearch1:',
-    }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(search_query, download=False)
-        if 'entries' in info:
-            info = info['entries'][0]  # first search result
-        url = info['url']
-        title = info['title']
-        print(f"🎶 Now playing: {title}")
+def execute_command(query: str):
+    query = query.lower()
 
-        # Play using ffplay (from ffmpeg)
-        subprocess.Popen(
-            ['ffplay', '-nodisp', '-autoexit', url],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-
-# === Example Command Execution ===
-def execute_command(command_text):
-    cmd = command_text.lower()
-
-    if "open camera" in cmd:
-        cap = cv2.VideoCapture(0)
-        if not cap.isOpened():
-            print("❌ Could not open camera.")
-            return
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            cv2.imshow("Camera", frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-        cap.release()
-        cv2.destroyAllWindows()
-
-    elif "open browser" in cmd or "start chrome" in cmd:
-        webbrowser.open("https://www.google.com")
-
-    elif "open notepad" in cmd:
+    # --- SYSTEM COMMANDS ---
+    if "open notepad" in query:
         subprocess.Popen(["notepad.exe"])
+        return "Opening Notepad"
 
-    elif "open calculator" in cmd:
+    elif "open calculator" in query:
         subprocess.Popen(["calc.exe"])
+        return "Opening Calculator"
 
-    elif "open netflix" in cmd or "start netflix" in cmd:
-        webbrowser.open("https://www.netflix.com")
+    elif "open command prompt" in query or "open cmd" in query:
+        subprocess.Popen("cmd.exe")
+        return "Opening Command Prompt"
 
-    elif "play" in cmd:
-        song_name = cmd.replace("play", "").replace("music", "").strip()
-        if song_name:
-            play_youtube_audio(song_name)
-        else:
-            play_youtube_audio("lofi hip hop")
+    elif "shutdown" in query:
+        os.system("shutdown /s /t 1")
+        return "Shutting down your PC"
 
-    else:
-        print("❓ Command not recognized.")
+    elif "restart" in query:
+        os.system("shutdown /r /t 1")
+        return "Restarting your PC"
+
+    # --- BROWSERS & WEBSITES ---
+    elif "open youtube" in query:
+        webbrowser.open("https://youtube.com")
+        return "Opening YouTube"
+
+    elif "open google" in query:
+        webbrowser.open("https://google.com")
+        return "Opening Google"
+
+    elif "open gmail" in query:
+        webbrowser.open("https://mail.google.com")
+        return "Opening Gmail"
+
+    elif "open github" in query:
+        webbrowser.open("https://github.com")
+        return "Opening GitHub"
+
+    elif "open linkedin" in query:
+        webbrowser.open("https://linkedin.com")
+        return "Opening LinkedIn"
+
+    elif "search" in query:
+        search_term = query.replace("search", "").strip()
+        if search_term:
+            webbrowser.open(f"https://www.google.com/search?q={search_term}")
+            return f"Searching Google for {search_term}"
+        return "What should I search?"
+
+    # --- MULTIPLE TASKS (CHAINED) ---
+    elif "work mode" in query:
+        subprocess.Popen(["notepad.exe"])
+        subprocess.Popen(["calc.exe"])
+        webbrowser.open("https://github.com")
+        webbrowser.open("https://mail.google.com")
+        return "Opened Notepad, Calculator, GitHub, and Gmail for work mode"
+
+    return None
