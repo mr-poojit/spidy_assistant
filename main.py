@@ -2,6 +2,7 @@ import speech_recognition as sr
 import pyttsx3
 from commands import execute_command
 from ollama_integration import process_query
+from commands import ask_ollama
 
 def speak(text):
     print(f"💬 Spidey says: {text}")
@@ -31,6 +32,18 @@ def listen():
     except sr.RequestError:
         return ""
 
+def handle_general_question(query: str):
+    # Before answering
+    print("🤔 Spidey is thinking...")
+    speak("Spidey is thinking...")  
+
+    # Ask Ollama
+    answer = ask_ollama(query)
+
+    # Speak the final answer
+    print(f"💬 Spidey says: {answer}")
+    speak(answer)
+    
 def run_assistant():
     while True:
         print("🎙️ Waiting for wake word: 'Hey Spidey', 'Hi Spidey', 'Yo boy'...")

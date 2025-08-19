@@ -1,10 +1,36 @@
 import os
 import webbrowser
 import subprocess
-import signal
 import cv2
 import pyautogui
 import pywhatkit  
+import requests 
+
+def ask_ollama(question: str) -> str:
+    """
+    Send a question to Ollama (llama3 model) and return the response.
+    """
+    try:
+        url = "http://localhost:11434/api/generate"
+        payload = {
+            "model": "llama3",   
+            "prompt": question,
+            "stream": False
+        }
+        response = requests.post(url, json=payload, timeout=60)
+
+        if response.status_code == 200:
+            data = response.json()
+            answer = data.get("response", "").strip()
+            if not answer:
+                return "Hmm, I couldn’t find an answer."
+            return answer
+        else:
+            return f"Error from Ollama: {response.status_code} {response.text}"
+
+    except Exception as e:
+        return f"⚠️ Failed to connect to Ollama: {str(e)}"
+
 
 def execute_command(query: str):
     query = query.lower()
@@ -113,13 +139,13 @@ def execute_command(query: str):
         webbrowser.open("https://mail.google.com")
         webbrowser.open("https://chat.openai.com")
         os.startfile(r"C:\Desktop\Web Development")  # Update to your folder path
-        return "Work mode activated: Opened Notepad, VS Code, GitHub, Gmail, ChatGPT, and your Dev folder"
+        return "Work mode activated: Opened Notepad, GitHub, Gmail, ChatGPT, and your Dev folder"
 
-      # Chill Mode
     elif "turn on chill mode" in query:
-        # Open the game link and YouTube
         webbrowser.open("https://www.crazygames.com/game/skillwarz")
         webbrowser.open("https://www.youtube.com")
         return "Chill mode on! Game and YouTube are ready, enjoy!"
 
-    return None
+    # --- FALLBACK TO OLLAMA (LLM ANSWERS) ---
+    else:
+        return ask_ollama(query)
