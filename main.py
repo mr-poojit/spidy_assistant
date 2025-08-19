@@ -19,7 +19,6 @@ def listen():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     with mic as source:
-        print("🎙️ Spidey is now listening... Say 'quit' to exit.")
         recognizer.adjust_for_ambient_noise(source)
         audio = recognizer.listen(source)
 
@@ -28,32 +27,36 @@ def listen():
         print(f"🔊 Heard: {text}")
         return text.lower()
     except sr.UnknownValueError:
-        print("❌ I didn't catch that.")
         return ""
     except sr.RequestError:
-        print("❌ Speech service error.")
         return ""
 
 def run_assistant():
     while True:
-        query = listen()
-        if query in ["quit", "exit", "stop"]:
-            speak("Spidey shutting down. See you soon!")
-            break
+        print("🎙️ Waiting for wake word: 'Hey Spidey', 'Hi Spidey', 'Yo boy'...")
+        wake = listen()
+        if "hey spidey" in wake:
+            speak("Hi Master, I'm ready for action!")
+            while True:
+                query = listen()
 
-        if not query:
-            continue
+                if query in ["quit", "exit", "stop"]:
+                    speak("Spidey shutting down. See you soon!")
+                    return
 
-        # Try OS-level commands first
-        response = execute_command(query)
-        if response:
-            speak(response)
-            continue
+                if not query:
+                    continue
 
-        # Else process with AI
-        ai_response = process_query(query)
-        if ai_response:
-            speak(ai_response)
+                # Try OS-level commands first
+                response = execute_command(query)
+                if response:
+                    speak(response)
+                    continue
+
+                # Else process with AI
+                ai_response = process_query(query)
+                if ai_response:
+                    speak(ai_response)
 
 if __name__ == "__main__":
     run_assistant()
