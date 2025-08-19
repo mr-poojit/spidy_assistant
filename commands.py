@@ -115,12 +115,11 @@ def execute_command(query: str):
         os.startfile(r"C:\Desktop\Web Development")  # Update to your folder path
         return "Work mode activated: Opened Notepad, VS Code, GitHub, Gmail, ChatGPT, and your Dev folder"
 
-    elif "chill mode" in query:
-        # Close all windows
-        os.system("taskkill /f /fi \"status eq running\"")
-        # Open lofi YouTube & Games
-        webbrowser.open("https://www.youtube.com/results?search_query=lofi+hip+hop")
-        webbrowser.open("https://crazygames.com")  # update this path to your games folder
-        return "Chill mode activated: Closed distractions, opened Lofi music and Games"
+      # Chill Mode
+    elif "turn on chill mode" in query:
+        # Open the game link and YouTube
+        webbrowser.open("https://www.crazygames.com/game/skillwarz")
+        webbrowser.open("https://www.youtube.com")
+        return "Chill mode on! Game and YouTube are ready, enjoy!"
 
     return None
