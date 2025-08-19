@@ -58,21 +58,21 @@ python main.py
 
 ## 📂 Project Structure
 
-spidey-assistant/
-├── main.py # Entry point
-├── config.py # Global config (name, voice rate, etc.)
-├── speech/
-│ ├── **init**.py
-│ ├── listener.py # Voice → Text (Vosk)
-│ └── tts.py # Text → Voice (pyttsx3)
-├── brain/
-│ ├── **init**.py
-│ └── nlp.py # Query handling using LLaMA (Ollama API)
-├── executor/
-│ ├── **init**.py
-│ └── commands.py # Runs system commands (open apps etc.)
-├── requirements.txt
-└── README.md
+    spidey-assistant/
+    ├── main.py # Entry point
+    ├── config.py # Global config (name, voice rate, etc.)
+    ├── speech/
+    │ ├── **init**.py
+    │ ├── listener.py # Voice → Text (Vosk)
+    │ └── tts.py # Text → Voice (pyttsx3)
+    ├── brain/
+    │ ├── **init**.py
+    │ └── nlp.py # Query handling using LLaMA (Ollama API)
+    ├── executor/
+    │ ├── **init**.py
+    │ └── commands.py # Runs system commands (open apps etc.)
+    ├── requirements.txt
+    └── README.md
 
 ---
 
