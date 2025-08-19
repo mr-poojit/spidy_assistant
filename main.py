@@ -1,10 +1,11 @@
 import speech_recognition as sr
 import pyttsx3
-from commands import execute_command
+from commands import execute_command, ask_ollama
 from ollama_integration import process_query
-from commands import ask_ollama
+
 
 def speak(text):
+    """Convert text to speech and print"""
     print(f"💬 Spidey says: {text}")
     try:
         engine = pyttsx3.init()
@@ -16,7 +17,9 @@ def speak(text):
     except Exception as e:
         print("Voice error:", e)
 
+
 def listen():
+    """Listen through mic and return recognized text"""
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     with mic as source:
@@ -32,24 +35,16 @@ def listen():
     except sr.RequestError:
         return ""
 
-def handle_general_question(query: str):
-    # Before answering
-    print("🤔 Spidey is thinking...")
-    speak("Spidey is thinking...")  
 
-    # Ask Ollama
-    answer = ask_ollama(query)
-
-    # Speak the final answer
-    print(f"💬 Spidey says: {answer}")
-    speak(answer)
-    
 def run_assistant():
+    """Main assistant loop"""
     while True:
         print("🎙️ Waiting for wake word: 'Hey Spidey', 'Hi Spidey', 'Yo boy'...")
         wake = listen()
-        if "hey spidey" in wake:
+
+        if "hey spidey" in wake or "hi spidey" in wake or "yo boy" in wake:
             speak("Hi Master, I'm ready for action!")
+
             while True:
                 query = listen()
 
@@ -60,16 +55,17 @@ def run_assistant():
                 if not query:
                     continue
 
-                # Try OS-level commands first
+                # Try built-in command execution
                 response = execute_command(query)
                 if response:
                     speak(response)
                     continue
 
-                # Else process with AI
-                ai_response = process_query(query)
+                # Otherwise process with Ollama/LLM
+                ai_response = process_query(query) or ask_ollama(query)
                 if ai_response:
                     speak(ai_response)
+
 
 if __name__ == "__main__":
     run_assistant()
