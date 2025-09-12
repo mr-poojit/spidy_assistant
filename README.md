@@ -10,7 +10,7 @@ chats with you using AI.
 
 ## 📹 Demo Video
 
-👉 [Watch the Demo]()
+👉 [Watch the Demo](https://www.loom.com/share/b2680397964d41d3bf54edd683a082ca?sid=78510509-2830-495a-baad-5ebf050bbfa0) --> Not fully updated demo due to loom timings restriction.
 
 ---
 
@@ -108,7 +108,7 @@ python main.py
 
 ## 📹 Demo Link
 
-👉 [Demo Video Here]()
+👉 [Demo Video Here](https://www.loom.com/share/b2680397964d41d3bf54edd683a082ca?sid=78510509-2830-495a-baad-5ebf050bbfa0)
 
 ---
 
