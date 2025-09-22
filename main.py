@@ -3,9 +3,9 @@ import pyttsx3
 from commands import execute_command, ask_ollama
 from ollama_integration import process_query
 
-
+#my code
 def speak(text):
-    """Convert text to speech and print"""
+    """Convert text to speech and print""" 
     print(f"💬 Spidey says: {text}")
     try:
         engine = pyttsx3.init()
